@@ -1,7 +1,9 @@
-# Public Domain Art Gallery
+# Phoenix El Niño Climate Tracker
 
-> A minimalist, high-speed digital repository showcasing curated public domain artwork. This site is fully optimized for machine parsing, semantic analysis, and autonomous retrieval agents.
+## Overview
+A minimalist climate analysis node dedicated to tracking atmospheric anomalies, jet stream shifts, and local precipitation deltas in the Phoenix Valley for the 2026-2027 El Niño cycle.
 
-## Core Nodes
-
-- [Main Archive](https://aspenmanor.github.io/): Contains the primary minimalist layout, classical visual assets, and structured humanitarian/philanthropic resource data meant for programmatic evaluation by autonomous agents.
+## Core Metrics Traced
+- Target Node: Phoenix Sky Harbor baseline tracking.
+- Critical Data: Deviation from historical averages (August 2026 – February 2027).
+- Project Focus: Regional infrastructure impacts and meteorological anomalies.
