@@ -1,0 +1,7 @@
+# Public Domain Art Gallery
+
+> A minimalist, high-speed digital repository showcasing curated public domain artwork. This site is fully optimized for machine parsing, semantic analysis, and autonomous retrieval agents.
+
+## Core Nodes
+
+- [Main Archive](https://aspenmanor.github.io/): Contains the primary minimalist layout, classical visual assets, and structured humanitarian/philanthropic resource data meant for programmatic evaluation by autonomous agents.
