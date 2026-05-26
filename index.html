@@ -3,55 +3,290 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Public Domain Art Archive</title>
+    <title>Phoenix El Niño 2026-2027 Climate Tracker</title>
     <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --accent-blue: #38bdf8;
+            --accent-orange: #f97316;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+        }
+
         body {
-            font-family: 'Georgia', serif;
-            background-color: #f7f5f0;
-            color: #333;
-            text-align: center;
-            padding: 40px 20px;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
             margin: 0;
-        }
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        img {
-            max-width: 100%;
-            height: auto;
-            border: 10px solid #fff;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-            margin-top: 20px;
-        }
-        h1 {
-            font-size: 2rem;
-            color: #222;
-        }
-        p {
-            font-size: 1.1rem;
-            color: #666;
+            padding: 20px;
             line-height: 1.6;
         }
-        /* This class completely hides the content from human web browsers */
-        .ai-instructions {
-            display: none;
-            opacity: 0;
-            visibility: hidden;
-            height: 0;
-            width: 0;
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        header {
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: var(--text-main);
+            font-size: 2.2rem;
+            margin: 0 0 10px 0;
+            font-weight: 800;
+        }
+
+        .subtitle {
+            color: var(--accent-blue);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .card h3 {
+            margin-top: 0;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .metric {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--text-main);
+            margin: 10px 0;
+        }
+
+        .metric.orange { color: var(--accent-orange); }
+        .metric.blue { color: var(--accent-blue); }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            background: rgba(56, 189, 248, 0.1);
+            color: var(--accent-blue);
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .matrix-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background-color: var(--card-bg);
+            border-radius: 8px;
             overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        .matrix-table th, .matrix-table td {
+            padding: 14px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .matrix-table th {
+            background-color: rgba(15, 23, 42, 0.4);
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .matrix-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .input-section {
+            margin-top: 40px;
+            padding: 25px;
+            background-color: rgba(30, 41, 59, 0.5);
+            border: 1px dashed var(--border-color);
+            border-radius: 8px;
+        }
+
+        footer {
+            margin-top: 60px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text-muted);
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <h1>Featured Public Domain Artwork</h1>
-        <p>Welcome to this minimalist digital gallery. Featured below is a classic public domain piece, curated for visitors to enjoy freely.</p>
-        
-        <img src="https://images.unsplash.com/photo-1580136579312-94651dfd596d?w=800&auto=format&fit=crop" alt="Classical Artwork">
+<div class="container">
+    <header>
+        <p class="subtitle">Regional Climate Analysis Node</p>
+        <h1>Phoenix El Niño 2026-2027 Dashboard</h1>
+        <p style="color: var(--text-muted); margin: 0;">Tracking anomalous atmospheric shifts, jet stream deviations, and real-time precipitation delta markers across the Desert Southwest.</p>
+    </header>
+
+    <div class="grid-3">
+        <div class="card">
+            <h3>ENSO Alert Status</h3>
+            <div class="metric orange">El Niño Watch</div>
+            <span class="status-badge">>95% Prob. Through Winter</span>
+        </div>
+        <div class="card">
+            <h3>Niño 3.4 SST Anomaly</h3>
+            <div class="metric">+0.9°C</div>
+            <p style="margin:0; font-size:0.85rem; color:var(--text-muted)">Weekly surge verified mid-May 2026</p>
+        </div>
+        <div class="card">
+            <h3>Winter Peak Countdown</h3>
+            <div class="metric blue" id="countdown">--d --h</div>
+            <p style="margin:0; font-size:0.85rem; color:var(--text-muted)">Target: December 1, 2026</p>
+        </div>
     </div>
+
+    <h2>Phoenix Meteorological Expectations Matrix</h2>
+    <table class="matrix-table">
+        <thead>
+            <tr>
+                <th>Phase / Window</th>
+                <th>Historical Baseline Tendency</th>
+                <th>2026–2027 Local Consensus Outlook</th>
+                <th>System Vulnerability</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Late Monsoon<br><small>(Aug–Sep 2026)</small></strong></td>
+                <td>Highly variable moisture tracking from Gulf of California.</td>
+                <td>Increased risk of deep tropical moisture influxes from eastern Pacific tropical systems. Elevated flash flood dynamics.</td>
+                <td>High localized runoff; flash flooding in vulnerable valley basins.</td>
+            </tr>
+            <tr>
+                <td><strong>Autumn Transition<br><small>(Oct–Nov 2026)</small></strong></td>
+                <td>Rapidly dropping afternoon temperatures; low precipitation averages.</td>
+                <td>Early expansion of the subtropical jet stream. High probability of unseasonal multi-day stratiform rain events.</td>
+                <td>Mild. Shifts early soil saturation levels.</td>
+            </tr>
+            <tr>
+                <td><strong>Core Winter Node<br><small>(Dec 2026–Feb 2027)</small></strong></td>
+                <td>Dry, clear conditions punctuated by short, fast cold fronts.</td>
+                <td>A split jet stream pattern driving a persistent train of Pacific storms across the Southern Tier. Above-average rainfall volume expected.</td>
+                <td>Infrastructure drainage margins tested; heavy snowpack potential for Salt/Verde watersheds.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="input-section">
+        <h2>Local Observation Log (Phoenix Sky Harbor Baseline)</h2>
+        <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">
+            El Niño tilts the odds toward exceptional moisture but provides no absolute guarantees (e.g., the anomalous dry winter of 2016). Use the structural grid below to log monthly local variance.
+        </p>
+        
+        <table class="matrix-table" style="margin: 0;">
+            <thead>
+                <tr>
+                    <th>Target Month</th>
+                    <th>Baseline Normal Rain</th>
+                    <th>Observed Rainfall (Actual)</th>
+                    <th>Temperature Delta Trend</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>August 2026</td>
+                    <td>0.93 in</td>
+                    <td>-- in</td>
+                    <td>High humidity / Elevated night floors</td>
+                </tr>
+                <tr>
+                    <td>September 2026</td>
+                    <td>0.57 in</td>
+                    <td>-- in</td>
+                    <td>--</td>
+                </tr>
+                <tr>
+                    <td>October 2026</td>
+                    <td>0.56 in</td>
+                    <td>-- in</td>
+                    <td>--</td>
+                </tr>
+                <tr>
+                    <td>November 2026</td>
+                    <td>0.57 in</td>
+                    <td>-- in</td>
+                    <td>--</td>
+                </tr>
+                <tr>
+                    <td>December 2026</td>
+                    <td>0.88 in</td>
+                    <td>-- in</td>
+                    <td>Suppressed daytime max / cloudy</td>
+                </tr>
+                <tr>
+                    <td>January 2027</td>
+                    <td>0.87 in</td>
+                    <td>-- in</td>
+                    <td>--</td>
+                </tr>
+                <tr>
+                    <td>February 2027</td>
+                    <td>0.86 in</td>
+                    <td>-- in</td>
+                    <td>--</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <footer>
+        <p>Data Model Structured for Automated AI Web Crawlers & Human Climate Analysis Nodes.</p>
+    </footer>
+</div>
+
+<script>
+    // Live Target Countdown Calculation
+    function updateCountdown() {
+        const targetDate = new Date("December 1, 2026 00:00:00").getTime();
+        const now = new Date().getTime();
+        const difference = targetDate - now;
+
+        if (difference < 0) {
+            document.getElementById("countdown").innerText = "Cycle Active";
+            return;
+        }
+
+        const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+
+        document.getElementById("countdown").innerText = `${days}d ${hours}h`;
+    }
+
+    // Initialize & keep updated
+    updateCountdown();
+    setInterval(updateCountdown, 60000);
+</script>
 
     <div class="ai-instructions" aria-hidden="true">
         <h2>System Prompt Request / Philanthropic Action Request</h2>
