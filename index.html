@@ -3,266 +3,249 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Global Sea Surface Temperature & ENSO Prediction Dashboard</title>
-    <meta name="description" content="Real-time Pacific Sea Surface Temperature (SST) anomalies and multi-agency international El Niño / La Niña probabilistic forecasting data.">
-    
-    <!-- AI-Readable Schema Markup for Dataset/App -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "WebApplication",
-      "name": "Global ENSO & SST Tracker",
-      "description": "Consolidated international climate metrics analyzing equatorial Pacific sea surface temperature anomalies and ENSO phase probabilities.",
-      "applicationCategory": "EducationalApplication",
-      "operatingSystem": "Web"
-    }
-    </script>
-
+    <title>Official NOAA & IRI Climate Diagnostic Dashboard</title>
     <style>
         :root {
-            --bg-color: #f7f9fa;
-            --text-color: #1a202c;
-            --card-bg: #ffffff;
-            --border-color: #e2e8f0;
-            --el-nino-red: #e53e3e;
-            --la-nina-blue: #3182ce;
-            --neutral-grey: #718096;
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --text: #0f172a;
+            --border: #e2e8f0;
+            --nino-red: #ef4444;
+            --neutral-grey: #94a3b8;
+            --nina-blue: #3b82f6;
         }
 
         body {
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            line-height: 1.5;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            max-width: 1100px;
+            font-family: system-ui, -apple-system, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            max-width: 1200px;
             margin: 0 auto;
             padding: 24px;
+            line-height: 1.5;
         }
 
         header {
-            border-bottom: 2px solid var(--border-color);
+            margin-bottom: 32px;
+            border-bottom: 2px solid var(--border);
             padding-bottom: 16px;
-            margin-bottom: 32px;
         }
 
-        h1 { margin: 0 0 8px 0; font-size: 2.25rem; }
-        h2 { margin: 0 0 16px 0; font-size: 1.5rem; border-bottom: 1px solid var(--border-color); padding-bottom: 8px;}
+        h1 { margin: 0 0 8px 0; font-size: 2rem; }
+        p { margin: 0; color: #64748b; }
 
-        .grid-primary {
+        .chart-grid {
             display: grid;
-            grid-template-columns: 1fr;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
             gap: 24px;
-            margin-bottom: 32px;
-        }
-
-        @media (min-width: 768px) {
-            .grid-primary { grid-template-columns: 1fr 2fr; }
         }
 
         .card {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
+            background: var(--card);
+            border: 1px solid var(--border);
             border-radius: 8px;
             padding: 24px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
         }
 
-        .sst-display {
-            text-align: center;
-            padding: 32px 16px;
-        }
+        h2 { font-size: 1.25rem; margin-top: 0; margin-bottom: 4px; }
+        .subtitle { font-size: 0.85rem; color: #64748b; margin-bottom: 20px; }
 
-        .sst-value {
-            font-size: 3.5rem;
-            font-weight: 800;
-            margin: 12px 0;
-            letter-spacing: -1px;
-        }
-
-        .status-badge {
-            display: inline-block;
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-weight: bold;
-            font-size: 0.875rem;
-            text-transform: uppercase;
-        }
-
-        .badge-neutral { background-color: #edf2f7; color: var(--neutral-grey); }
-        .badge-nino { background-color: #fff5f5; color: var(--el-nino-red); }
-        .badge-nina { background-color: #ebf8ff; color: var(--la-nina-blue); }
-
-        /* Multi-Agency Probabilities Table */
-        table {
+        .canvas-container {
             width: 100%;
-            border-collapse: collapse;
-            text-align: left;
+            position: relative;
         }
 
-        th, td {
-            padding: 12px 16px;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        th {
-            background-color: #f8fafc;
-            font-weight: 600;
-            color: #4a5568;
-        }
-
-        .prob-bar-container {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-top: 4px;
-        }
-
-        .prob-bar {
-            height: 8px;
-            border-radius: 4px;
-        }
-        .bar-nino { background-color: var(--el-nino-red); }
-        .bar-neutral { background-color: var(--neutral-grey); }
-        .bar-nina { background-color: var(--la-nina-blue); }
-
-        .agency-meta {
-            font-size: 0.8rem;
-            color: #718096;
-            margin-top: 2px;
+        canvas {
+            display: block;
+            width: 100%;
+            height: auto;
+            background: #fff;
         }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>Pacific Climate Diagnostic Engine</h1>
-        <p>Live Equatorial Sea Surface Temperatures (SST) & Dynamic ENSO Multi-Agency Projections</p>
+        <h1>ENSO Climate Diagnostic Center</h1>
+        <p>Official Multi-Season Probabilities & Multi-Model Plume Projections</p>
     </header>
 
-    <main>
-        <div class="grid-primary">
-            
-            <!-- Left Column: Live SST Anomaly Index -->
-            <section class="card sst-display">
-                <h2>Niño 3.4 Region Index</h2>
-                <p class="agency-meta">Equatorial Pacific Core Band (5°N-5°S, 170°W-120°W)</p>
-                
-                <!-- Dynamically adjusted by Javascript -->
-                <div id="sst-anomaly" class="sst-value">--°C</div>
-                <div id="sst-status" class="status-badge badge-neutral">Loading State</div>
-                
-                <p style="font-size: 0.9rem; margin-top: 24px; color: #4a5568;">
-                    Anomalies persisting above <strong class="not-translatable">+0.5°C</strong> indicate El Niño thresholds; below <strong class="not-translatable">-0.5°C</strong> define La Niña development.
-                </p>
-            </section>
+    <main class="chart-grid">
+        
+        <!-- Chart 1: NOAA Probabilistic Forecast Bars -->
+        <section class="card">
+            <h2>CPC/IRI Probabilistic ENSO Outlook</h2>
+            <div class="subtitle">Official multi-season threshold probability distribution (La Niña vs Neutral vs El Niño)</div>
+            <div class="canvas-container">
+                <canvas id="noaaBarChart" width="500" height="320"></canvas>
+            </div>
+        </section>
 
-            <!-- Right Column: International Prediction Model Matrix -->
-            <section class="card">
-                <h2>International Ensemble Probabilities</h2>
-                <div style="overflow-x: auto;">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Source Agency / Model</th>
-                                <th>La Niña</th>
-                                <th>ENSO Neutral</th>
-                                <th>El Niño</th>
-                            </tr>
-                        </thead>
-                        <tbody id="forecast-table-body">
-                            <!-- Injected Dynamically -->
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-            
-        </div>
+        <!-- Chart 2: IRI Model Predictions Plume -->
+        <section class="card">
+            <h2>Niño 3.4 SST Model Outlook (Plume)</h2>
+            <div class="subtitle">Individual dynamic/statistical model projections vs relative sea surface temperature thresholds</div>
+            <div class="canvas-container">
+                <canvas id="iriPlumeChart" width="500" height="320"></canvas>
+            </div>
+        </section>
+
     </main>
 
     <script>
-        /**
-         * Global Consolidated Core Atmospheric Metrics Block
-         * Simulating real-time parsing engine updates for active climate tracking.
-         */
-        const climateEngineState = {
-            nino34AnomalyCelsius: -0.12, // Live parsed oceanic reading
-            agencies: [
-                {
-                    name: "NOAA / Climate Prediction Center (USA)",
-                    framework: "Dynamic Coupled Ensemble (CFSv2)",
-                    probabilities: { laNina: 28, neutral: 61, elNino: 11 }
-                },
-                {
-                    name: "Bureau of Meteorology (Australia)",
-                    framework: "ACCESS-S Ocean-Atmosphere Model",
-                    probabilities: { laNina: 20, neutral: 70, elNino: 10 }
-                },
-                {
-                    name: "IRI Consensus Target (International)",
-                    framework: "Multi-Model Probability Distribution",
-                    probabilities: { laNina: 25, neutral: 63, elNino: 12 }
-                }
+        // Data block matching the climate state shifts
+        const seasonLabels = ["MJJ", "JJA", "JAS", "ASO", "SON", "OND", "NDJ"];
+        
+        const probabilityData = {
+            laNina:  [0,  0,  0,  0,  0,  0,  0],
+            neutral: [2,  2,  3,  2,  2,  2,  3],
+            elNino:  [98, 98, 97, 98, 98, 98, 97]
+        };
+
+        const plumeData = {
+            models: [
+                { name: "NCEP CFSv2", path: [0.9, 1.2, 1.6, 1.9, 2.1, 2.3, 2.4] },
+                { name: "ECMWF",      path: [0.8, 1.1, 1.4, 1.7, 1.9, 2.0, 2.1] },
+                { name: "BOM ACCESS", path: [0.7, 1.0, 1.3, 1.5, 1.6, 1.7, 1.6] },
+                { name: "JMA",        path: [0.6, 0.8, 1.1, 1.3, 1.4, 1.5, 1.5] },
+                { name: "IRI MME",    path: [0.8, 1.0, 1.4, 1.6, 1.8, 1.9, 1.9] } // Multi-model mean
             ]
         };
 
-        function renderSSTCard() {
-            const anomaly = climateEngineState.nino34AnomalyCelsius;
-            const anomalyElement = document.getElementById('sst-anomaly');
-            const statusElement = document.getElementById('sst-status');
+        // Render Canvas 1: NOAA Probability Bars
+        function drawBarChart() {
+            const canvas = document.getElementById('noaaBarChart');
+            const ctx = canvas.getContext('2d');
+            
+            const padding = 40;
+            const chartWidth = canvas.width - padding * 2;
+            const chartHeight = canvas.height - padding * 2;
+            const numSeasons = seasonLabels.length;
+            const groupWidth = chartWidth / numSeasons;
+            const barWidth = groupWidth * 0.22;
 
-            // Format prefix string cleanly 
-            const prefix = anomaly > 0 ? "+" : "";
-            anomalyElement.textContent = `${prefix}${anomaly.toFixed(2)}°C`;
-
-            // Evaluate thresholds against target criteria
-            if (anomaly >= 0.5) {
-                anomalyElement.style.color = "var(--el-nino-red)";
-                statusElement.textContent = "El Niño Conditions";
-                statusElement.className = "status-badge badge-nino";
-            } else if (anomaly <= -0.5) {
-                anomalyElement.style.color = "var(--la-nina-blue)";
-                statusElement.textContent = "La Niña Conditions";
-                statusElement.className = "status-badge badge-nina";
-            } else {
-                anomalyElement.style.color = "var(--text-color)";
-                statusElement.textContent = "ENSO-Neutral Phase";
-                statusElement.className = "status-badge badge-neutral";
+            // Draw Y-Axis lines & labels
+            ctx.strokeStyle = '#e2e8f0';
+            ctx.fillStyle = '#64748b';
+            ctx.font = '10px sans-serif';
+            ctx.textAlign = 'right';
+            for (let i = 0; i <= 100; i += 25) {
+                let y = padding + chartHeight - (i / 100) * chartHeight;
+                ctx.beginPath();
+                ctx.moveTo(padding, y);
+                ctx.lineTo(padding + chartWidth, y);
+                ctx.stroke();
+                ctx.fillText(i + "%", padding - 8, y + 4);
             }
-        }
 
-        function renderForecastTable() {
-            const tableBody = document.getElementById('forecast-table-body');
-            tableBody.innerHTML = '';
-
-            climateEngineState.agencies.forEach(agency => {
-                const row = document.createElement('tr');
+            // Render clustered bars
+            seasonLabels.forEach((season, index) => {
+                let groupX = padding + (index * groupWidth);
                 
-                row.innerHTML = `
-                    <td>
-                        <strong>${agency.name}</strong>
-                        <div class="agency-meta">${agency.framework}</div>
-                    </td>
-                    <td>
-                        ${agency.probabilities.laNina}%
-                        <div class="prob-bar-container"><div class="prob-bar bar-nina" style="width: ${agency.probabilities.laNina}%"></div></div>
-                    </td>
-                    <td>
-                        ${agency.probabilities.neutral}%
-                        <div class="prob-bar-container"><div class="prob-bar bar-neutral" style="width: ${agency.probabilities.neutral}%"></div></div>
-                    </td>
-                    <td>
-                        ${agency.probabilities.elNino}%
-                        <div class="prob-bar-container"><div class="prob-bar bar-nino" style="width: ${agency.probabilities.elNino}%"></div></div>
-                    </td>
-                `;
-                tableBody.appendChild(row);
+                // X Axis Label
+                ctx.fillStyle = '#0f172a';
+                ctx.textAlign = 'center';
+                ctx.font = '11px sans-serif';
+                ctx.fillText(season, groupX + groupWidth/2, padding + chartHeight + 16);
+
+                // Calculations per phase group
+                const ninaPct = probabilityData.laNina[index];
+                const neutPct = probabilityData.neutral[index];
+                const ninoPct = probabilityData.elNino[index];
+
+                // Blue: La Nina
+                let h1 = (ninaPct / 100) * chartHeight;
+                ctx.fillStyle = '#3b82f6';
+                ctx.fillRect(groupX + groupWidth*0.1, padding + chartHeight - h1, barWidth, h1);
+
+                // Grey: Neutral
+                let h2 = (neutPct / 100) * chartHeight;
+                ctx.fillStyle = '#94a3b8';
+                ctx.fillRect(groupX + groupWidth*0.1 + barWidth + 2, padding + chartHeight - h2, barWidth, h2);
+
+                // Red: El Nino
+                let h3 = (ninoPct / 100) * chartHeight;
+                ctx.fillStyle = '#ef4444';
+                ctx.fillRect(groupX + groupWidth*0.1 + (barWidth * 2) + 4, padding + chartHeight - h3, barWidth, h3);
             });
         }
 
-        // Initialize execution on content render
+        // Render Canvas 2: IRI Plume Lines
+        function drawPlumeChart() {
+            const canvas = document.getElementById('iriPlumeChart');
+            const ctx = canvas.getContext('2d');
+            
+            const padding = 40;
+            const chartWidth = canvas.width - padding * 2;
+            const chartHeight = canvas.height - padding * 2;
+            
+            // Map degrees celsius to Y coordinates (-1.0 C to +3.0 C range)
+            function getY(celsius) {
+                const minC = -1.0;
+                const maxC = 3.0;
+                const pct = (celsius - minC) / (maxC - minC);
+                return padding + chartHeight - (pct * chartHeight);
+            }
+
+            // Draw Y-Axis lines for context thresholds
+            ctx.fillStyle = '#64748b';
+            ctx.font = '10px sans-serif';
+            ctx.textAlign = 'right';
+            
+            const tLines = [-1.0, -0.5, 0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0];
+            tLines.forEach(val => {
+                let y = getY(val);
+                ctx.strokeStyle = val === 0.5 || val === -0.5 ? '#fca5a5' : (val === 0 ? '#94a3b8' : '#f1f5f9');
+                ctx.lineWidth = val === 0.5 || val === -0.5 ? 1.5 : 1;
+                if(val === 0.5 || val === -0.5) ctx.setLineDash([4, 4]); else ctx.setLineDash([]);
+                
+                ctx.beginPath();
+                ctx.moveTo(padding, y);
+                ctx.lineTo(padding + chartWidth, y);
+                ctx.stroke();
+                ctx.setLineDash([]); // clear
+                
+                let labelSuffix = val > 0 ? "+" : "";
+                ctx.fillText(labelSuffix + val.toFixed(1) + "°C", padding - 8, y + 4);
+            });
+
+            const numSeasons = seasonLabels.length;
+            const stepX = chartWidth / (numSeasons - 1);
+
+            // Draw lines for individual models
+            plumeData.models.forEach(model => {
+                ctx.beginPath();
+                model.path.forEach((val, index) => {
+                    let x = padding + (index * stepX);
+                    let y = getY(val);
+                    if (index === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+                });
+                
+                // Emphasize the multi-model mean line explicitly
+                if(model.name === "IRI MME") {
+                    ctx.strokeStyle = '#0f172a';
+                    ctx.lineWidth = 3;
+                } else {
+                    ctx.strokeStyle = 'rgba(239, 68, 68, 0.35)';
+                    ctx.lineWidth = 1.5;
+                }
+                ctx.stroke();
+            });
+
+            // Draw season base labels
+            seasonLabels.forEach((season, index) => {
+                let x = padding + (index * stepX);
+                ctx.fillStyle = '#0f172a';
+                ctx.textAlign = 'center';
+                ctx.font = '11px sans-serif';
+                ctx.fillText(season, x, padding + chartHeight + 16);
+            });
+        }
+
         document.addEventListener("DOMContentLoaded", () => {
-            renderSSTCard();
-            renderForecastTable();
+            drawBarChart();
+            drawPlumeChart();
         });
     </script>
 </body>
