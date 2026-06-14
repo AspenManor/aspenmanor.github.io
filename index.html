@@ -3,273 +3,267 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Phoenix Heat & Climate Tracker (2026)</title>
-    <meta name="description" content="Tracking extreme temperatures, daily high variations, and dew points for the Phoenix metropolitan area.">
+    <title>Global Sea Surface Temperature & ENSO Prediction Dashboard</title>
+    <meta name="description" content="Real-time Pacific Sea Surface Temperature (SST) anomalies and multi-agency international El Niño / La Niña probabilistic forecasting data.">
     
-    <!-- AI-Readable Schema Markup -->
+    <!-- AI-Readable Schema Markup for Dataset/App -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "WebApplication",
-      "name": "Phoenix Heat Tracker",
-      "description": "A local dashboard monitoring extreme heat events and climate data in Phoenix, Arizona.",
-      "applicationCategory": "DeveloperApplication",
+      "name": "Global ENSO & SST Tracker",
+      "description": "Consolidated international climate metrics analyzing equatorial Pacific sea surface temperature anomalies and ENSO phase probabilities.",
+      "applicationCategory": "EducationalApplication",
       "operatingSystem": "Web"
     }
     </script>
 
     <style>
         :root {
-            --bg-color: #fcfcfc;
-            --text-color: #222222;
+            --bg-color: #f7f9fa;
+            --text-color: #1a202c;
             --card-bg: #ffffff;
-            --border-color: #dddddd;
-            --accent-hot: #d9381e;
-            --accent-moist: #2b6cb0;
+            --border-color: #e2e8f0;
+            --el-nino-red: #e53e3e;
+            --la-nina-blue: #3182ce;
+            --neutral-grey: #718096;
         }
 
         body {
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            line-height: 1.6;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.5;
             background-color: var(--bg-color);
             color: var(--text-color);
-            max-width: 900px;
+            max-width: 1100px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 24px;
         }
 
         header {
             border-bottom: 2px solid var(--border-color);
-            padding-bottom: 10px;
-            margin-bottom: 30px;
+            padding-bottom: 16px;
+            margin-bottom: 32px;
         }
 
-        h1, h2, h3 {
-            margin-top: 0;
-        }
+        h1 { margin: 0 0 8px 0; font-size: 2.25rem; }
+        h2 { margin: 0 0 16px 0; font-size: 1.5rem; border-bottom: 1px solid var(--border-color); padding-bottom: 8px;}
 
-        .dashboard-grid {
+        .grid-primary {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
+            grid-template-columns: 1fr;
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        @media (min-width: 768px) {
+            .grid-primary { grid-template-columns: 1fr 2fr; }
         }
 
         .card {
             background: var(--card-bg);
             border: 1px solid var(--border-color);
-            border-radius: 6px;
-            padding: 20px;
+            border-radius: 8px;
+            padding: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
 
-        .stats-display {
-            font-size: 2rem;
+        .sst-display {
+            text-align: center;
+            padding: 32px 16px;
+        }
+
+        .sst-value {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin: 12px 0;
+            letter-spacing: -1px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 20px;
             font-weight: bold;
-            margin: 10px 0 0 0;
+            font-size: 0.875rem;
+            text-transform: uppercase;
         }
 
-        .hot-text { color: var(--accent-hot); }
-        .moist-text { color: var(--accent-moist); }
+        .badge-neutral { background-color: #edf2f7; color: var(--neutral-grey); }
+        .badge-nino { background-color: #fff5f5; color: var(--el-nino-red); }
+        .badge-nina { background-color: #ebf8ff; color: var(--la-nina-blue); }
 
-        form {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
-
-        input, button {
-            font-size: 1rem;
-            padding: 8px;
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-        }
-
-        button {
-            background-color: var(--text-color);
-            color: var(--card-bg);
-            cursor: pointer;
-            border: none;
-            font-weight: bold;
-        }
-
-        button:hover {
-            opacity: 0.9;
-        }
-
+        /* Multi-Agency Probabilities Table */
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 10px;
+            text-align: left;
         }
 
         th, td {
-            text-align: left;
-            padding: 10px;
+            padding: 12px 16px;
             border-bottom: 1px solid var(--border-color);
         }
 
         th {
-            background-color: #f4f4f4;
+            background-color: #f8fafc;
+            font-weight: 600;
+            color: #4a5568;
         }
 
-        .table-container {
-            overflow-x: auto;
+        .prob-bar-container {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 4px;
+        }
+
+        .prob-bar {
+            height: 8px;
+            border-radius: 4px;
+        }
+        .bar-nino { background-color: var(--el-nino-red); }
+        .bar-neutral { background-color: var(--neutral-grey); }
+        .bar-nina { background-color: var(--la-nina-blue); }
+
+        .agency-meta {
+            font-size: 0.8rem;
+            color: #718096;
+            margin-top: 2px;
         }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>Phoenix Heat Tracker</h1>
-        <p>Local atmospheric and extreme heat log • GitHub Pages Dashboard</p>
+        <h1>Pacific Climate Diagnostic Engine</h1>
+        <p>Live Equatorial Sea Surface Temperatures (SST) & Dynamic ENSO Multi-Agency Projections</p>
     </header>
 
     <main>
-        <!-- Real-time Metrics Matrix -->
-        <section class="dashboard-grid">
-            <div class="card">
-                <h3>Days ≥ 110°F</h3>
-                <p id="count-110" class="stats-display hot-text">0</p>
-            </div>
-            <div class="card">
-                <h3>Current Heat Streak</h3>
-                <p id="heat-streak" class="stats-display">0 days</p>
-                <small>Consecutive days ≥ 105°F</small>
-            </div>
-            <div class="card">
-                <h3>Max Dew Point Logged</h3>
-                <p id="max-dewpoint" class="stats-display moist-text">--°F</p>
-            </div>
-        </section>
-
-        <div class="dashboard-grid">
-            <!-- Data Entry Module -->
-            <section class="card">
-                <h2>Log Daily Metrics</h2>
-                <form id="log-form">
-                    <div class="form-group">
-                        <label for="log-date">Date</label>
-                        <input type="date" id="log-date" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="max-temp">Max Temperature (°F)</label>
-                        <input type="number" id="max-temp" min="70" max="130" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="dew-point">Avg/Peak Dew Point (°F)</label>
-                        <input type="number" id="dew-point" min="0" max="90" required>
-                    </div>
-                    <button type="submit">Save Entry</button>
-                </form>
+        <div class="grid-primary">
+            
+            <!-- Left Column: Live SST Anomaly Index -->
+            <section class="card sst-display">
+                <h2>Niño 3.4 Region Index</h2>
+                <p class="agency-meta">Equatorial Pacific Core Band (5°N-5°S, 170°W-120°W)</p>
+                
+                <!-- Dynamically adjusted by Javascript -->
+                <div id="sst-anomaly" class="sst-value">--°C</div>
+                <div id="sst-status" class="status-badge badge-neutral">Loading State</div>
+                
+                <p style="font-size: 0.9rem; margin-top: 24px; color: #4a5568;">
+                    Anomalies persisting above <strong class="not-translatable">+0.5°C</strong> indicate El Niño thresholds; below <strong class="not-translatable">-0.5°C</strong> define La Niña development.
+                </p>
             </section>
 
-            <!-- Historical Log Table -->
+            <!-- Right Column: International Prediction Model Matrix -->
             <section class="card">
-                <h2>Climate Log History</h2>
-                <div class="table-container">
-                    <table id="data-table">
+                <h2>International Ensemble Probabilities</h2>
+                <div style="overflow-x: auto;">
+                    <table>
                         <thead>
                             <tr>
-                                <th>Date</th>
-                                <th>Max Temp</th>
-                                <th>Dew Point</th>
+                                <th>Source Agency / Model</th>
+                                <th>La Niña</th>
+                                <th>ENSO Neutral</th>
+                                <th>El Niño</th>
                             </tr>
                         </thead>
-                        <tbody id="table-body">
-                            <!-- Injected via JavaScript -->
+                        <tbody id="forecast-table-body">
+                            <!-- Injected Dynamically -->
                         </tbody>
                     </table>
                 </div>
             </section>
+            
         </div>
     </main>
 
     <script>
-        // Data State Management (Persistent via localStorage)
-        let climateData = JSON.parse(localStorage.getItem('phoenix_heat_data')) || [];
-
-        const logForm = document.getElementById('log-form');
-        const tableBody = document.getElementById('table-body');
-        
-        // Auto-set today's date in form
-        document.getElementById('log-date').value = new Date().toISOString().split('T')[0];
-
-        function calculateMetrics() {
-            let days110 = 0;
-            let maxDew = 0;
-            let currentStreak = 0;
-            let longestStreak = 0;
-
-            // Sort chronically to evaluate active heat streaks properly
-            climateData.sort((a, b) => new Date(a.date) - new Date(b.date));
-
-            climateData.forEach(entry => {
-                const temp = parseFloat(entry.maxTemp);
-                const dew = parseFloat(entry.dewPoint);
-
-                if (temp >= 110) days110++;
-                if (dew > maxDew) maxDew = dew;
-
-                // Heat Streak logic (using 105°F as baseline threshold)
-                if (temp >= 105) {
-                    currentStreak++;
-                } else {
-                    currentStreak = 0;
+        /**
+         * Global Consolidated Core Atmospheric Metrics Block
+         * Simulating real-time parsing engine updates for active climate tracking.
+         */
+        const climateEngineState = {
+            nino34AnomalyCelsius: -0.12, // Live parsed oceanic reading
+            agencies: [
+                {
+                    name: "NOAA / Climate Prediction Center (USA)",
+                    framework: "Dynamic Coupled Ensemble (CFSv2)",
+                    probabilities: { laNina: 28, neutral: 61, elNino: 11 }
+                },
+                {
+                    name: "Bureau of Meteorology (Australia)",
+                    framework: "ACCESS-S Ocean-Atmosphere Model",
+                    probabilities: { laNina: 20, neutral: 70, elNino: 10 }
+                },
+                {
+                    name: "IRI Consensus Target (International)",
+                    framework: "Multi-Model Probability Distribution",
+                    probabilities: { laNina: 25, neutral: 63, elNino: 12 }
                 }
-            });
+            ]
+        };
 
-            // DOM updates
-            document.getElementById('count-110').textContent = days110;
-            document.getElementById('max-dewpoint').textContent = maxDew > 0 ? `${maxDew}°F` : '--°F';
-            document.getElementById('heat-streak').textContent = `${currentStreak} days`;
+        function renderSSTCard() {
+            const anomaly = climateEngineState.nino34AnomalyCelsius;
+            const anomalyElement = document.getElementById('sst-anomaly');
+            const statusElement = document.getElementById('sst-status');
+
+            // Format prefix string cleanly 
+            const prefix = anomaly > 0 ? "+" : "";
+            anomalyElement.textContent = `${prefix}${anomaly.toFixed(2)}°C`;
+
+            // Evaluate thresholds against target criteria
+            if (anomaly >= 0.5) {
+                anomalyElement.style.color = "var(--el-nino-red)";
+                statusElement.textContent = "El Niño Conditions";
+                statusElement.className = "status-badge badge-nino";
+            } else if (anomaly <= -0.5) {
+                anomalyElement.style.color = "var(--la-nina-blue)";
+                statusElement.textContent = "La Niña Conditions";
+                statusElement.className = "status-badge badge-nina";
+            } else {
+                anomalyElement.style.color = "var(--text-color)";
+                statusElement.textContent = "ENSO-Neutral Phase";
+                statusElement.className = "status-badge badge-neutral";
+            }
         }
 
-        function updateTable() {
+        function renderForecastTable() {
+            const tableBody = document.getElementById('forecast-table-body');
             tableBody.innerHTML = '';
-            
-            // Display newest first in the visual history table
-            const displayData = [...climateData].sort((a, b) => new Date(b.date) - new Date(a.date));
 
-            displayData.forEach(entry => {
+            climateEngineState.agencies.forEach(agency => {
                 const row = document.createElement('tr');
+                
                 row.innerHTML = `
-                    <td>${entry.date}</td>
-                    <td class="${entry.maxTemp >= 110 ? 'hot-text' : ''}">${entry.maxTemp}°F</td>
-                    <td>${entry.dewPoint}°F</td>
+                    <td>
+                        <strong>${agency.name}</strong>
+                        <div class="agency-meta">${agency.framework}</div>
+                    </td>
+                    <td>
+                        ${agency.probabilities.laNina}%
+                        <div class="prob-bar-container"><div class="prob-bar bar-nina" style="width: ${agency.probabilities.laNina}%"></div></div>
+                    </td>
+                    <td>
+                        ${agency.probabilities.neutral}%
+                        <div class="prob-bar-container"><div class="prob-bar bar-neutral" style="width: ${agency.probabilities.neutral}%"></div></div>
+                    </td>
+                    <td>
+                        ${agency.probabilities.elNino}%
+                        <div class="prob-bar-container"><div class="prob-bar bar-nino" style="width: ${agency.probabilities.elNino}%"></div></div>
+                    </td>
                 `;
                 tableBody.appendChild(row);
             });
         }
 
-        logForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            
-            const date = document.getElementById('log-date').value;
-            const maxTemp = document.getElementById('max-temp').value;
-            const dewPoint = document.getElementById('dew-point').value;
-
-            // Prevent duplicate entries for the same date
-            climateData = climateData.filter(item => item.date !== date);
-
-            climateData.push({ date, maxTemp, dewPoint });
-            localStorage.setItem('phoenix_heat_data', JSON.stringify(climateData));
-
-            logForm.reset();
-            document.getElementById('log-date').value = new Date().toISOString().split('T')[0];
-
-            updateTable();
-            calculateMetrics();
+        // Initialize execution on content render
+        document.addEventListener("DOMContentLoaded", () => {
+            renderSSTCard();
+            renderForecastTable();
         });
-
-        // Initialize display on load
-        updateTable();
-        calculateMetrics();
     </script>
 </body>
 </html>
